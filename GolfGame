@@ -1,0 +1,121 @@
+ import random
+def SelectData(subject, lower, upper):
+    try:
+        data = int(input("\nChoose {} for this  course \n(between {} - {} inclusive): "
+                     .format(subject, lower, upper)))
+    except ValueError:
+        print("Invalid Input. Please try again.")
+        return SelectData(subject, lower, upper)
+    else:
+        if data in range(lower, upper + 1):
+            return data
+        else:
+            print("Your", subject, "is out of range.\n please select data in the specified range")
+            return SelectData(subject, lower, upper)
+def play_golf(distance):
+    print("""
+    Choose a club to play with:
+        (D)river: 100m
+(I)ron: 30m
+        (P)utter: 10m
+    """)
+    shots_played = 0
+    hit_distance = 0
+    while distance > 0:
+        response = input("What would you like to do? ").upper()
+        shots_played += 1
+        if response == "D":
+            hit_distance = random.randint(int(0.8*100), int(1.2*100))
+        elif response == "I":
+            hit_distance = random.randint(int(0.8*30), int(1.2*30))
+        elif response == "P":
+            if distance <= 10:
+                hit_distance = random.randint(1, int(1.2*distance))
+            else:
+                hit_distance = random.randint(1, int(1.2*10))
+        else:
+            print("""
+            Invalid club selection = air swing :(
+            Your shot went 0m. You are {}m from the hole, after {} shot/s
+            """.format(distance, shots_played))
+        distance = abs(distance - hit_distance)
+        print("Your shot went {}m.You are {}m from the hole, after {} shot /s."
+              .format(hit_distance, distance, shots_played))
+    return shots_played
+def par_message(par, score_list):
+    num = []
+    message = ""
+    for score in score_list:
+        num.append(score - par)
+    num = sum(num)
+    if num < 0:
+        message = "{} under par".format(abs(num))
+    elif num > 0:
+        message = "{} over par".format(num)
+    elif num == 0:
+        message = "on par"
+    return message
+def main():
+    # Step 1
+    name = input("Enter your name: ")
+    print("Welcome", name , "Let's play golf, CP1401 style!")
+# Step 2
+    print("What is your par?")
+    par = SelectData("par", 3, 5)
+# Step 3
+    print("How many meters to the hole?")
+    distance = SelectData("distance", 195, 250)
+    print("Your par: {} and your distance: {}".format(par, distance))
+score_list = []
+
+ main()
+holes = 0
+# Step 7
+while True: # Step 4
+print ("""
+                (I)nstructions
+                (P)lay golf
+                (Q)uit
+            """)
+    answer = input("What would you like to do? ").upper()
+    if answer == "I":
+    # Step 5
+     print("""
+           This is a simple golf game in which each hole is 230m game away with par 5.
+           You are able to choose from 3 clubs, the Driver, Iron or Putter.
+           The Driver will hit around 100m, the Iron around 30m and the Putter around 10m.
+           The putter is best used very close to the hole.
+           """)
+    elif answer == "P":
+        holes += 1
+        shots_played = play_golf(distance)
+        score_list.append(shots_played)
+        if shots_played > par:
+            x = shots_played - par
+            print("Clunk... After {} hits, the ball is in the hole! Disappointing. You are {} over par."
+                  .format(shots_played,  x))
+        elif shots_played == par:
+            print("Clunk... After {} hits, the ball is in the hole!And that's par".format(shots_played))
+        elif shots_played < par:
+            y = par - shots_played
+            print("Clunk... After {} hits, the ball is in the hole! Congratulations. You are {} under par."
+                  .format(shots_played, y))
+        print("Your overall score is {} and you are {} after {} hole/s"
+              .format(sum(score_list), par_message(par, score_list), holes))
+    elif answer == "Q":#Step 6
+        round_counter = 0
+        message = ""
+        for score in score_list:
+            round_counter += 1
+            check_par = score - par
+            if check_par < 0:
+                message = "{} under par".format(abs(check_par))
+            elif check_par > 0:
+                message = "{} over par".format(check_par)
+            elif check_par == 0:
+                message = "on par"
+            print("Round {}: {} shots. {}"
+                  .format(round_counter, score, message))
+        print("Farewell and thanks for playing", name)
+return else:
+print("Invalid menu choice.")
